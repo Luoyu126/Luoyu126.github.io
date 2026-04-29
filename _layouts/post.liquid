@@ -88,7 +88,8 @@ layout: default
   {% endif %}
 
   {% assign github_repo = site.giscus.repo %}
-  {% assign like_key = page.url | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
+  {% assign like_key_source = page.id | default: page.url %}
+  {% assign like_key = like_key_source | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
   <div class="post-social-actions">
     <button class="post-social-link post-like-button" data-like-key="{{ like_key }}" type="button" aria-label="Like this post">
       <i class="fa-regular fa-heart fa-sm"></i>

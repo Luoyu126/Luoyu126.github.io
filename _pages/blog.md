@@ -105,7 +105,8 @@ pagination:
     {% assign year = post.date | date: "%Y" %}
     {% assign tags = post.tags | join: "" %}
     {% assign stars = post.stars | default: 0 %}
-    {% assign like_key = post.url | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
+    {% assign like_key_source = post.id | default: post.url %}
+    {% assign like_key = like_key_source | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
 
     <li class="post-list-item" data-date="{{ post.date | date: '%s' }}" data-stars="{{ stars }}" data-like-key="{{ like_key }}">
 

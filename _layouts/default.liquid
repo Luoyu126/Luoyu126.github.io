@@ -24,8 +24,8 @@
     <div class="container mt-5" role="main">
       {% if page.toc and page.toc.sidebar %}
         {% if page.layout == 'post' %}
-          <button id="toc-floating-toggle" class="toc-floating-toggle" type="button" aria-label="Show table of contents">
-            Show TOC
+          <button id="toc-floating-toggle" class="toc-floating-toggle" type="button" aria-label="Toggle table of contents">
+            Hide TOC
           </button>
         {% endif %}
         {% if page.toc.sidebar == 'right' %}
@@ -34,11 +34,6 @@
             <div class="col-sm-9 toc-main-column">{{ content }}</div>
             <!-- sidebar, which will move to the top on a small screen -->
             <div class="col-sm-3 toc-sidebar-column">
-              {% if page.layout == 'post' %}
-                <button id="toc-sidebar-toggle" class="toc-sidebar-toggle" type="button" aria-expanded="true" aria-controls="toc-sidebar">
-                  Hide TOC
-                </button>
-              {% endif %}
               <nav id="toc-sidebar" class="sticky-top"></nav>
             </div>
           </div>
@@ -46,11 +41,6 @@
           <div class="row toc-layout">
             <!-- sidebar, which will move to the top on a small screen -->
             <div class="col-sm-3 toc-sidebar-column">
-              {% if page.layout == 'post' %}
-                <button id="toc-sidebar-toggle" class="toc-sidebar-toggle" type="button" aria-expanded="true" aria-controls="toc-sidebar">
-                  Hide TOC
-                </button>
-              {% endif %}
               <nav id="toc-sidebar" class="sticky-top"></nav>
             </div>
             <!-- main content area -->

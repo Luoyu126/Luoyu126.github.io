@@ -479,7 +479,7 @@ nav[data-toggle="toc"] {
 }
 
 .toc-floating-toggle {
-  display: none;
+  display: inline-flex;
   position: fixed;
   top: 78px;
   left: 12px;
@@ -496,10 +496,6 @@ nav[data-toggle="toc"] {
     color: var(--global-theme-color);
     border-color: var(--global-theme-color);
   }
-}
-
-.toc-floating-toggle.show {
-  display: inline-flex;
 }
 
 #toc-sidebar.is-collapsed {

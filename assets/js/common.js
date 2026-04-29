@@ -32,12 +32,10 @@ $(document).ready(function () {
     });
   }
 
-  const tocToggleButton = document.getElementById("toc-sidebar-toggle");
   const tocFloatingToggle = document.getElementById("toc-floating-toggle");
   const tocSidebar = document.getElementById("toc-sidebar");
-  if ((tocToggleButton || tocFloatingToggle) && tocSidebar) {
+  if (tocFloatingToggle && tocSidebar) {
     const tocLayout =
-      tocToggleButton?.closest(".toc-layout") ||
       tocFloatingToggle?.closest(".toc-layout") ||
       document.querySelector(".toc-layout");
     const tocMainColumn = tocLayout?.querySelector(".toc-main-column");
@@ -54,23 +52,16 @@ $(document).ready(function () {
         tocSidebarColumn.classList.toggle("d-none", isCollapsed);
       }
 
-      if (tocToggleButton) {
-        tocToggleButton.setAttribute("aria-expanded", (!isCollapsed).toString());
-        tocToggleButton.textContent = "Hide TOC";
-      }
-
-      if (tocFloatingToggle) {
-        tocFloatingToggle.classList.toggle("show", isCollapsed);
-      }
+      tocFloatingToggle.setAttribute("aria-expanded", (!isCollapsed).toString());
+      tocFloatingToggle.textContent = isCollapsed ? "Show TOC" : "Hide TOC";
     };
 
-    if (tocToggleButton) {
-      tocToggleButton.addEventListener("click", () => setTocCollapsed(true));
-    }
+    setTocCollapsed(false);
 
-    if (tocFloatingToggle) {
-      tocFloatingToggle.addEventListener("click", () => setTocCollapsed(false));
-    }
+    tocFloatingToggle.addEventListener("click", () => {
+      const nextCollapsed = !tocSidebar.classList.contains("is-collapsed");
+      setTocCollapsed(nextCollapsed);
+    });
   }
 
   // add css to jupyter notebooks
