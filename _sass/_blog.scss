@@ -152,15 +152,15 @@
       cursor: pointer;
     }
 
-    button.post-social-link:disabled {
-      cursor: default;
-      opacity: 0.75;
-    }
-
     .post-social-link.is-liked,
     .post-social-link.is-starred {
       color: var(--global-theme-color);
       border-color: var(--global-theme-color);
+    }
+
+    .post-action-label {
+      min-width: 4.8rem;
+      text-align: left;
     }
 
     .post-like-count,
