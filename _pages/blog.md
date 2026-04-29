@@ -93,7 +93,7 @@ pagination:
     <label for="blog-sort-select">Sort by</label>
     <select id="blog-sort-select" aria-label="Sort blog posts">
       <option value="time" selected>Time</option>
-      <option value="hot">Hot (Stars)</option>
+      <option value="hot">Hot (Likes)</option>
     </select>
   </div>
 
@@ -105,8 +105,9 @@ pagination:
     {% assign year = post.date | date: "%Y" %}
     {% assign tags = post.tags | join: "" %}
     {% assign stars = post.stars | default: 0 %}
+    {% assign like_key = post.url | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
 
-    <li class="post-list-item" data-date="{{ post.date | date: '%s' }}" data-stars="{{ stars }}">
+    <li class="post-list-item" data-date="{{ post.date | date: '%s' }}" data-stars="{{ stars }}" data-like-key="{{ like_key }}">
 
 {% if post.thumbnail %}
 
@@ -129,7 +130,7 @@ pagination:
       <p class="post-meta">
         {{ post.date | date: '%B %d, %Y' }}
         &nbsp; &middot; &nbsp;
-        <i class="fa-regular fa-star fa-sm"></i> {{ stars }}
+        <i class="fa-regular fa-heart fa-sm"></i> <span class="post-like-count">{{ stars }}</span>
         {% if post.external_source %}
         &nbsp; &middot; &nbsp; {{ post.external_source }}
         {% endif %}
@@ -170,6 +171,7 @@ pagination:
     const sortSelect = document.getElementById("blog-sort-select");
     const postList = document.querySelector(".post-list");
     if (!sortSelect || !postList) return;
+    const namespace = "chenyy-homepage-post-likes";
 
     const sortPosts = (sortBy) => {
       const posts = Array.from(postList.querySelectorAll(".post-list-item"));
@@ -182,9 +184,36 @@ pagination:
       posts.forEach((post) => postList.appendChild(post));
     };
 
+    const getLikeCount = async (rawKey, fallbackValue) => {
+      if (!rawKey) return fallbackValue;
+      try {
+        const encodedKey = encodeURIComponent(rawKey);
+        const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${encodedKey}`);
+        const data = await response.json();
+        return Number(data.value) || 0;
+      } catch (error) {
+        return fallbackValue;
+      }
+    };
+
+    const syncLikeCounts = async () => {
+      const posts = Array.from(postList.querySelectorAll(".post-list-item"));
+      await Promise.all(
+        posts.map(async (post) => {
+          const fallbackValue = Number(post.dataset.stars) || 0;
+          const likeValue = await getLikeCount(post.dataset.likeKey, fallbackValue);
+          post.dataset.stars = String(likeValue);
+          const countEl = post.querySelector(".post-like-count");
+          if (countEl) countEl.textContent = String(likeValue);
+        })
+      );
+    };
+
     sortSelect.addEventListener("change", (event) => {
       sortPosts(event.target.value);
     });
+
+    syncLikeCounts().then(() => sortPosts(sortSelect.value));
   })();
 </script>
 

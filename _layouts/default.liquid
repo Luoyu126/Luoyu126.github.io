@@ -23,6 +23,11 @@
     <!-- Content -->
     <div class="container mt-5" role="main">
       {% if page.toc and page.toc.sidebar %}
+        {% if page.layout == 'post' %}
+          <button id="toc-floating-toggle" class="toc-floating-toggle" type="button" aria-label="Show table of contents">
+            Show TOC
+          </button>
+        {% endif %}
         {% if page.toc.sidebar == 'right' %}
           <div class="row toc-layout">
             <!-- main content area -->

@@ -90,14 +90,21 @@ layout: default
   {% assign github_repo = site.giscus.repo %}
   {% assign repo_owner = github_repo | split: '/' | first %}
   {% assign repo_name = github_repo | split: '/' | last %}
-  {% if page.giscus_comments or github_repo != blank %}
+  {% assign like_key = page.url | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
+  {% assign discussion_title = 'Comment on: ' | append: page.title %}
+  {% assign discussion_title_escaped = discussion_title | uri_escape %}
+  {% assign discussion_url = 'https://github.com/' | append: github_repo | append: '/discussions/new?category=general&title=' | append: discussion_title_escaped %}
+  {% if github_repo != blank %}
     <div class="post-social-actions">
-      {% if page.giscus_comments %}
-        <a class="post-social-link" href="#giscus_thread">
-          <i class="fa-regular fa-heart fa-sm"></i>
-          Like &amp; Comment
-        </a>
-      {% endif %}
+      <button class="post-social-link post-like-button" data-like-key="{{ like_key }}" type="button" aria-label="Like this post">
+        <i class="fa-regular fa-heart fa-sm"></i>
+        Like
+        <span class="post-like-count">0</span>
+      </button>
+      <a class="post-social-link" href="{{ discussion_url }}" target="_blank" rel="noopener noreferrer">
+        <i class="fa-regular fa-comment fa-sm"></i>
+        Comment
+      </a>
       {% if github_repo != blank %}
         <iframe
           src="https://ghbtns.com/github-btn.html?user={{ repo_owner }}&repo={{ repo_name }}&type=star&count=true"
@@ -109,10 +116,68 @@ layout: default
     </div>
   {% endif %}
 
+  <script>
+    (() => {
+      const button = document.querySelector(".post-like-button");
+      if (!button) return;
+
+      const namespace = "chenyy-homepage-post-likes";
+      const rawKey = button.dataset.likeKey;
+      const key = encodeURIComponent(rawKey || "");
+      const countEl = button.querySelector(".post-like-count");
+      const storageKey = `liked:${namespace}:${rawKey}`;
+
+      if (!rawKey || !countEl) return;
+
+      const setLikedState = (isLiked) => {
+        button.classList.toggle("is-liked", isLiked);
+        button.disabled = isLiked;
+      };
+
+      const setCount = (value) => {
+        countEl.textContent = Number.isFinite(value) ? String(value) : "0";
+      };
+
+      const getCount = async () => {
+        try {
+          const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${key}`);
+          const data = await response.json();
+          return Number(data.value) || 0;
+        } catch (error) {
+          return 0;
+        }
+      };
+
+      const hitCount = async () => {
+        try {
+          const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+          const data = await response.json();
+          return Number(data.value) || 0;
+        } catch (error) {
+          return null;
+        }
+      };
+
+      const alreadyLiked = localStorage.getItem(storageKey) === "true";
+      setLikedState(alreadyLiked);
+
+      getCount().then(setCount);
+
+      button.addEventListener("click", async () => {
+        if (localStorage.getItem(storageKey) === "true") return;
+        const newValue = await hitCount();
+        if (newValue === null) return;
+        setCount(newValue);
+        localStorage.setItem(storageKey, "true");
+        setLikedState(true);
+      });
+    })();
+  </script>
+
   {% if site.disqus_shortname and page.disqus_comments %}
     {% include disqus.liquid %}
   {% endif %}
-  {% if site.giscus and page.giscus_comments %}
+  {% if site.giscus.enabled and page.giscus_comments %}
     {% include giscus.liquid %}
   {% endif %}
 </div>

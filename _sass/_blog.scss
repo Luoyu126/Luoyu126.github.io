@@ -151,6 +151,27 @@
         border-color: var(--global-theme-color);
       }
     }
+
+    button.post-social-link {
+      background: var(--global-bg-color);
+      cursor: pointer;
+    }
+
+    button.post-social-link:disabled {
+      cursor: default;
+      opacity: 0.75;
+    }
+
+    .post-social-link.is-liked {
+      color: var(--global-theme-color);
+      border-color: var(--global-theme-color);
+    }
+
+    .post-like-count {
+      font-weight: 600;
+      min-width: 1.4rem;
+      text-align: center;
+    }
   }
 
   .post-content {
@@ -231,8 +252,8 @@
         border-radius: 0.5rem;
         padding: 0.9rem 1rem;
         background: rgba(128, 128, 128, 0.08);
-        font-size: 0.98rem;
-        line-height: 1.7;
+        font-size: 0.9rem;
+        line-height: 1.55;
       }
 
       blockquote p {

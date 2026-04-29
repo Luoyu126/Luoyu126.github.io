@@ -33,26 +33,44 @@ $(document).ready(function () {
   }
 
   const tocToggleButton = document.getElementById("toc-sidebar-toggle");
+  const tocFloatingToggle = document.getElementById("toc-floating-toggle");
   const tocSidebar = document.getElementById("toc-sidebar");
-  if (tocToggleButton && tocSidebar) {
-    const tocLayout = tocToggleButton.closest(".toc-layout");
+  if ((tocToggleButton || tocFloatingToggle) && tocSidebar) {
+    const tocLayout =
+      tocToggleButton?.closest(".toc-layout") ||
+      tocFloatingToggle?.closest(".toc-layout") ||
+      document.querySelector(".toc-layout");
     const tocMainColumn = tocLayout?.querySelector(".toc-main-column");
     const tocSidebarColumn = tocLayout?.querySelector(".toc-sidebar-column");
 
-    tocToggleButton.addEventListener("click", () => {
-      const isCollapsed = tocSidebar.classList.toggle("is-collapsed");
+    const setTocCollapsed = (isCollapsed) => {
+      tocSidebar.classList.toggle("is-collapsed", isCollapsed);
 
       if (tocLayout && tocMainColumn && tocSidebarColumn) {
         tocLayout.classList.toggle("toc-collapsed", isCollapsed);
         tocMainColumn.classList.toggle("col-sm-9", !isCollapsed);
-        tocMainColumn.classList.toggle("col-sm-11", isCollapsed);
+        tocMainColumn.classList.toggle("col-sm-12", isCollapsed);
         tocSidebarColumn.classList.toggle("col-sm-3", !isCollapsed);
-        tocSidebarColumn.classList.toggle("col-sm-1", isCollapsed);
+        tocSidebarColumn.classList.toggle("d-none", isCollapsed);
       }
 
-      tocToggleButton.setAttribute("aria-expanded", (!isCollapsed).toString());
-      tocToggleButton.textContent = isCollapsed ? "Show TOC" : "Hide TOC";
-    });
+      if (tocToggleButton) {
+        tocToggleButton.setAttribute("aria-expanded", (!isCollapsed).toString());
+        tocToggleButton.textContent = "Hide TOC";
+      }
+
+      if (tocFloatingToggle) {
+        tocFloatingToggle.classList.toggle("show", isCollapsed);
+      }
+    };
+
+    if (tocToggleButton) {
+      tocToggleButton.addEventListener("click", () => setTocCollapsed(true));
+    }
+
+    if (tocFloatingToggle) {
+      tocFloatingToggle.addEventListener("click", () => setTocCollapsed(false));
+    }
   }
 
   // add css to jupyter notebooks

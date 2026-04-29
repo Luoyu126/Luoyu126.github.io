@@ -109,6 +109,7 @@ related_blog_posts:
 # Giscus comments (RECOMMENDED)
 # Follow instructions on https://giscus.app/ to setup for your repo to fill out the information below.
 giscus:
+  enabled: false # set to true after installing giscus app on this repository
   repo: Luoyu126/Luoyu126.github.io
   repo_id: R_kgDORDn3mg
   category: General
