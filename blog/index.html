@@ -20,13 +20,16 @@
 
     const getLikeCount = async (rawKey, fallbackValue) => {
       if (!rawKey) return fallbackValue;
+      const localFallback = Number(localStorage.getItem(`counter:${namespace}:${rawKey}`)) || 0;
       try {
         const encodedKey = encodeURIComponent(rawKey);
         const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${encodedKey}`);
         const data = await response.json();
-        return Number(data.value) || 0;
+        const value = Number(data.value) || 0;
+        localStorage.setItem(`counter:${namespace}:${rawKey}`, String(value));
+        return value;
       } catch (error) {
-        return fallbackValue;
+        return Math.max(fallbackValue, localFallback);
       }
     };
 
