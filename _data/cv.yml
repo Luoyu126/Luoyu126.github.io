@@ -6,6 +6,7 @@ cv:
   location: Beijing, China
   address:
     city: Beijing
+    region: China
     countryCode: CN
 
   sections:
@@ -22,7 +23,7 @@ cv:
     Research Experience:
       - company: MiniCPM-V OCR Competence Optimization
         position: Research Assistant
-        location: Department of Computer Science and Technology, Tsinghua University, Beijing, China
+        location: Tsinghua University, Beijing, China
         start_date: 2026.01
         end_date: Present
         summary: "Advisors: Assoc. Prof. Zhiyuan Liu and Assistant Prof. Yuan Yao."
@@ -31,7 +32,7 @@ cv:
           - Conducted targeted training for different optimization strategies.
       - company: Commenotes - Synthesizing Organic Comments for Fact-Checking
         position: Research Assistant
-        location: Institute for Network Sciences and Cyberspace, Tsinghua University, Beijing, China
+        location: Tsinghua University, Beijing, China
         start_date: 2025.07
         end_date: 2025.09
         summary: "Advisor: Assoc. Prof. Xin Yi."
@@ -42,7 +43,7 @@ cv:
     Project Experience:
       - company: Development of an Online Judge (OJ) System
         position: Lead Developer
-        location: Department of Computer Science and Technology, Tsinghua University, Beijing, China
+        location: Tsinghua University, Beijing, China
         start_date: 2025.06
         end_date: 2025.07
         summary: "Advisor: Assoc. Prof. Yuxiao Dong."
