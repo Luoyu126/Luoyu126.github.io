@@ -1,15 +1,9 @@
 // Has to be in the head tag, otherwise a flicker effect will occur.
 
-// Toggle through light, dark, and system theme settings.
+// Toggle between light and dark theme settings.
 let toggleThemeSetting = () => {
   let themeSetting = determineThemeSetting();
-  if (themeSetting == "system") {
-    setThemeSetting("light");
-  } else if (themeSetting == "light") {
-    setThemeSetting("dark");
-  } else {
-    setThemeSetting("system");
-  }
+  setThemeSetting(themeSetting == "light" ? "dark" : "light");
 };
 
 // Change the theme setting and apply the theme.
@@ -252,30 +246,31 @@ let transTheme = () => {
   }, 500);
 };
 
-// Determine the expected state of the theme toggle, which can be "dark", "light", or
-// "system". Default is "system".
+// Determine system preferred theme ("dark" or "light").
+let determineSystemTheme = () => {
+  const userPref = window.matchMedia;
+  if (userPref && userPref("(prefers-color-scheme: dark)").matches) {
+    return "dark";
+  }
+  return "light";
+};
+
+// Determine the expected state of the theme toggle, which can be "dark" or "light".
+// Legacy "system" values are migrated to the current computed theme.
 let determineThemeSetting = () => {
   let themeSetting = localStorage.getItem("theme");
-  if (themeSetting != "dark" && themeSetting != "light" && themeSetting != "system") {
-    themeSetting = "system";
+  if (themeSetting == "system") {
+    themeSetting = determineSystemTheme();
+  }
+  if (themeSetting != "dark" && themeSetting != "light") {
+    themeSetting = determineSystemTheme();
   }
   return themeSetting;
 };
 
-// Determine the computed theme, which can be "dark" or "light". If the theme setting is
-// "system", the computed theme is determined based on the user's system preference.
+// Determine the computed theme, which can be "dark" or "light".
 let determineComputedTheme = () => {
-  let themeSetting = determineThemeSetting();
-  if (themeSetting == "system") {
-    const userPref = window.matchMedia;
-    if (userPref && userPref("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    } else {
-      return "light";
-    }
-  } else {
-    return themeSetting;
-  }
+  return determineThemeSetting();
 };
 
 let initTheme = () => {
@@ -292,10 +287,6 @@ let initTheme = () => {
     });
   });
 
-  // Add event listener to the system theme preference change.
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
-    applyTheme();
-  });
 };
 
 // Get the appropriate background color for Google Calendar based on current theme
