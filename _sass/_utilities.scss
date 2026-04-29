@@ -454,6 +454,10 @@ nav[data-toggle="toc"] {
   max-height: calc(100vh - 9rem);
   overflow-y: auto;
   transition: max-height 0.2s ease, opacity 0.2s ease;
+
+  a {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 .toc-sidebar-toggle {
@@ -477,6 +481,19 @@ nav[data-toggle="toc"] {
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+@media (min-width: 576px) {
+  .toc-layout.toc-collapsed {
+    .toc-main-column {
+      transition: max-width 0.2s ease, flex-basis 0.2s ease;
+    }
+
+    .toc-sidebar-column {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+  }
 }
 
 .echarts {

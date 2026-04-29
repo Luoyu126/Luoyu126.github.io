@@ -35,8 +35,21 @@ $(document).ready(function () {
   const tocToggleButton = document.getElementById("toc-sidebar-toggle");
   const tocSidebar = document.getElementById("toc-sidebar");
   if (tocToggleButton && tocSidebar) {
+    const tocLayout = tocToggleButton.closest(".toc-layout");
+    const tocMainColumn = tocLayout?.querySelector(".toc-main-column");
+    const tocSidebarColumn = tocLayout?.querySelector(".toc-sidebar-column");
+
     tocToggleButton.addEventListener("click", () => {
       const isCollapsed = tocSidebar.classList.toggle("is-collapsed");
+
+      if (tocLayout && tocMainColumn && tocSidebarColumn) {
+        tocLayout.classList.toggle("toc-collapsed", isCollapsed);
+        tocMainColumn.classList.toggle("col-sm-9", !isCollapsed);
+        tocMainColumn.classList.toggle("col-sm-11", isCollapsed);
+        tocSidebarColumn.classList.toggle("col-sm-3", !isCollapsed);
+        tocSidebarColumn.classList.toggle("col-sm-1", isCollapsed);
+      }
+
       tocToggleButton.setAttribute("aria-expanded", (!isCollapsed).toString());
       tocToggleButton.textContent = isCollapsed ? "Show TOC" : "Hide TOC";
     });

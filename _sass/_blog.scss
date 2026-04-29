@@ -185,6 +185,7 @@
         margin-top: 2rem;
         margin-bottom: 0.75rem;
         scroll-margin-top: 90px;
+        font-variant-numeric: tabular-nums;
       }
 
       h2 {
@@ -230,6 +231,12 @@
         border-radius: 0.5rem;
         padding: 0.9rem 1rem;
         background: rgba(128, 128, 128, 0.08);
+        font-size: 0.98rem;
+        line-height: 1.7;
+      }
+
+      blockquote p {
+        font-size: inherit;
       }
 
       pre,
