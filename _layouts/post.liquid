@@ -88,96 +88,227 @@ layout: default
   {% endif %}
 
   {% assign github_repo = site.giscus.repo %}
-  {% assign repo_owner = github_repo | split: '/' | first %}
-  {% assign repo_name = github_repo | split: '/' | last %}
   {% assign like_key = page.url | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
-  {% assign discussion_title = 'Comment on: ' | append: page.title %}
-  {% assign discussion_title_escaped = discussion_title | uri_escape %}
-  {% assign discussion_url = 'https://github.com/' | append: github_repo | append: '/discussions/new?category=general&title=' | append: discussion_title_escaped %}
-  {% if github_repo != blank %}
-    <div class="post-social-actions">
-      <button class="post-social-link post-like-button" data-like-key="{{ like_key }}" type="button" aria-label="Like this post">
-        <i class="fa-regular fa-heart fa-sm"></i>
-        Like
-        <span class="post-like-count">0</span>
-      </button>
-      <a class="post-social-link" href="{{ discussion_url }}" target="_blank" rel="noopener noreferrer">
-        <i class="fa-regular fa-comment fa-sm"></i>
-        Comment
-      </a>
-      {% if github_repo != blank %}
-        <iframe
-          src="https://ghbtns.com/github-btn.html?user={{ repo_owner }}&repo={{ repo_name }}&type=star&count=true"
-          width="170"
-          height="20"
-          title="Star {{ github_repo }} on GitHub"
-        ></iframe>
-      {% endif %}
-    </div>
-  {% endif %}
+  <div class="post-social-actions">
+    <button class="post-social-link post-like-button" data-like-key="{{ like_key }}" type="button" aria-label="Like this post">
+      <i class="fa-regular fa-heart fa-sm"></i>
+      Like
+      <span class="post-like-count">0</span>
+    </button>
+    <button class="post-social-link post-comment-focus" type="button" aria-label="Write a comment">
+      <i class="fa-regular fa-comment fa-sm"></i>
+      Comment
+    </button>
+    <button
+      class="post-social-link post-repo-star-button"
+      data-repo-key="{{ github_repo }}"
+      type="button"
+      aria-label="Star this repository"
+    >
+      <i class="fa-regular fa-star fa-sm"></i>
+      Star Repo
+      <span class="post-repo-star-count">0</span>
+    </button>
+  </div>
+
+  <section id="post-comments" class="post-comment-section">
+    <h3>Comments</h3>
+    <form id="post-comment-form" class="post-comment-form">
+      <input id="post-comment-name" type="text" maxlength="40" placeholder="Your name (optional)">
+      <textarea id="post-comment-text" rows="4" maxlength="1000" placeholder="Write your comment..."></textarea>
+      <button type="submit" class="post-comment-submit">Post Comment</button>
+    </form>
+    <p class="post-comment-note">Comments are shown instantly below this post.</p>
+    <div id="post-comment-empty" class="post-comment-empty">No comments yet.</div>
+    <ul id="post-comment-list" class="post-comment-list"></ul>
+  </section>
 
   <script>
     (() => {
-      const button = document.querySelector(".post-like-button");
-      if (!button) return;
+      const LIKE_NAMESPACE = "chenyy-homepage-post-likes";
+      const STAR_NAMESPACE = "chenyy-homepage-repo-stars";
 
-      const namespace = "chenyy-homepage-post-likes";
-      const rawKey = button.dataset.likeKey;
-      const key = encodeURIComponent(rawKey || "");
-      const countEl = button.querySelector(".post-like-count");
-      const storageKey = `liked:${namespace}:${rawKey}`;
+      const likeButton = document.querySelector(".post-like-button");
+      const repoStarButton = document.querySelector(".post-repo-star-button");
+      const commentFocusButton = document.querySelector(".post-comment-focus");
+      const commentForm = document.getElementById("post-comment-form");
+      const commentNameInput = document.getElementById("post-comment-name");
+      const commentTextInput = document.getElementById("post-comment-text");
+      const commentList = document.getElementById("post-comment-list");
+      const commentEmpty = document.getElementById("post-comment-empty");
 
-      if (!rawKey || !countEl) return;
-
-      const setLikedState = (isLiked) => {
-        button.classList.toggle("is-liked", isLiked);
-        button.disabled = isLiked;
+      const readLocalCount = (namespace, rawKey) => {
+        const value = Number(localStorage.getItem(`counter:${namespace}:${rawKey}`));
+        return Number.isFinite(value) ? value : 0;
       };
 
-      const setCount = (value) => {
-        countEl.textContent = Number.isFinite(value) ? String(value) : "0";
+      const writeLocalCount = (namespace, rawKey, value) => {
+        localStorage.setItem(`counter:${namespace}:${rawKey}`, String(value));
       };
 
-      const getCount = async () => {
+      const readLocalFlag = (namespace, rawKey) => {
+        return localStorage.getItem(`flag:${namespace}:${rawKey}`) === "true";
+      };
+
+      const writeLocalFlag = (namespace, rawKey) => {
+        localStorage.setItem(`flag:${namespace}:${rawKey}`, "true");
+      };
+
+      const getRemoteCount = async (namespace, rawKey) => {
+        const key = encodeURIComponent(rawKey || "");
         try {
           const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${key}`);
           const data = await response.json();
-          return Number(data.value) || 0;
+          const value = Number(data.value) || 0;
+          writeLocalCount(namespace, rawKey, value);
+          return value;
         } catch (error) {
-          return 0;
+          return readLocalCount(namespace, rawKey);
         }
       };
 
-      const hitCount = async () => {
+      const hitRemoteCount = async (namespace, rawKey) => {
+        const key = encodeURIComponent(rawKey || "");
         try {
           const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
           const data = await response.json();
-          return Number(data.value) || 0;
+          const value = Number(data.value) || 0;
+          writeLocalCount(namespace, rawKey, value);
+          return value;
         } catch (error) {
-          return null;
+          const fallbackValue = readLocalCount(namespace, rawKey) + 1;
+          writeLocalCount(namespace, rawKey, fallbackValue);
+          return fallbackValue;
         }
       };
 
-      const alreadyLiked = localStorage.getItem(storageKey) === "true";
-      setLikedState(alreadyLiked);
+      const bindCounterButton = ({
+        button,
+        namespace,
+        rawKey,
+        countSelector,
+        likedClass,
+      }) => {
+        if (!button || !rawKey) return;
+        const countEl = button.querySelector(countSelector);
+        if (!countEl) return;
 
-      getCount().then(setCount);
+        const setCount = (value) => {
+          countEl.textContent = String(Number.isFinite(value) ? value : 0);
+        };
 
-      button.addEventListener("click", async () => {
-        if (localStorage.getItem(storageKey) === "true") return;
-        const newValue = await hitCount();
-        if (newValue === null) return;
-        setCount(newValue);
-        localStorage.setItem(storageKey, "true");
-        setLikedState(true);
+        const setClickedState = (clicked) => {
+          button.classList.toggle(likedClass, clicked);
+          button.disabled = clicked;
+        };
+
+        const clicked = readLocalFlag(namespace, rawKey);
+        setClickedState(clicked);
+        getRemoteCount(namespace, rawKey).then(setCount);
+
+        button.addEventListener("click", async () => {
+          if (readLocalFlag(namespace, rawKey)) return;
+          writeLocalFlag(namespace, rawKey);
+          setClickedState(true);
+
+          const optimisticValue = readLocalCount(namespace, rawKey) + 1;
+          writeLocalCount(namespace, rawKey, optimisticValue);
+          setCount(optimisticValue);
+
+          const value = await hitRemoteCount(namespace, rawKey);
+          setCount(value);
+        });
+      };
+
+      bindCounterButton({
+        button: likeButton,
+        namespace: LIKE_NAMESPACE,
+        rawKey: likeButton?.dataset.likeKey || "",
+        countSelector: ".post-like-count",
+        likedClass: "is-liked",
       });
+
+      bindCounterButton({
+        button: repoStarButton,
+        namespace: STAR_NAMESPACE,
+        rawKey: repoStarButton?.dataset.repoKey || "repo",
+        countSelector: ".post-repo-star-count",
+        likedClass: "is-starred",
+      });
+
+      if (commentFocusButton && commentTextInput) {
+        commentFocusButton.addEventListener("click", () => {
+          const commentSection = document.getElementById("post-comments");
+          if (commentSection) {
+            commentSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+          commentTextInput.focus();
+        });
+      }
+
+      const commentStorageKey = `comments:{{ like_key }}`;
+
+      const loadComments = () => {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(commentStorageKey) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      };
+
+      const saveComments = (comments) => {
+        localStorage.setItem(commentStorageKey, JSON.stringify(comments));
+      };
+
+      const renderComments = () => {
+        if (!commentList || !commentEmpty) return;
+
+        const comments = loadComments().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        commentList.innerHTML = "";
+        commentEmpty.style.display = comments.length > 0 ? "none" : "block";
+
+        comments.forEach((comment) => {
+          const item = document.createElement("li");
+          item.className = "post-comment-item";
+
+          const meta = document.createElement("div");
+          meta.className = "post-comment-meta";
+          const date = new Date(comment.createdAt || Date.now());
+          meta.textContent = `${comment.name || "Anonymous"} · ${date.toLocaleString()}`;
+
+          const content = document.createElement("p");
+          content.className = "post-comment-content";
+          content.textContent = comment.text || "";
+
+          item.appendChild(meta);
+          item.appendChild(content);
+          commentList.appendChild(item);
+        });
+      };
+
+      renderComments();
+
+      if (commentForm && commentTextInput) {
+        commentForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const text = commentTextInput.value.trim();
+          if (!text) return;
+
+          const name = commentNameInput?.value.trim() || "Anonymous";
+          const comments = loadComments();
+          comments.push({
+            id: Date.now(),
+            name,
+            text,
+            createdAt: Date.now(),
+          });
+          saveComments(comments);
+          commentTextInput.value = "";
+          if (commentNameInput) commentNameInput.value = "";
+          renderComments();
+        });
+      }
     })();
   </script>
-
-  {% if site.disqus_shortname and page.disqus_comments %}
-    {% include disqus.liquid %}
-  {% endif %}
-  {% if site.giscus.enabled and page.giscus_comments %}
-    {% include giscus.liquid %}
-  {% endif %}
 </div>
