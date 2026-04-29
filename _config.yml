@@ -122,6 +122,11 @@ giscus:
   emit_metadata: 0
   lang: en
 
+# Supabase (for blog likes)
+supabase:
+  url: https://ypwidtkupdrrujcjirpz.supabase.co
+  anon_key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlwd2lkdGt1cGRycnVqY2ppcnB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NjMwMzYsImV4cCI6MjA5MzAzOTAzNn0.Q5eY42ptU9e-rcBZwlp63lIPLHtqoPNnqab0Rzk3wZk
+
 # Disqus comments (DEPRECATED)
 disqus_shortname: al-folio # put your disqus shortname
 # https://help.disqus.com/en/articles/1717111-what-s-a-shortname

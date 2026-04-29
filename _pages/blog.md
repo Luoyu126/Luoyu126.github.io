@@ -172,52 +172,103 @@ pagination:
     const sortSelect = document.getElementById("blog-sort-select");
     const postList = document.querySelector(".post-list");
     if (!sortSelect || !postList) return;
-    const namespace = "chenyy-homepage-post-likes";
+    const SUPABASE_URL = "{{ site.supabase.url | default: '' }}";
+    const SUPABASE_ANON_KEY = "{{ site.supabase.anon_key | default: '' }}";
+    const NORMALIZED_SUPABASE_URL = SUPABASE_URL.replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
+    const CACHE_KEY = "blog-like-cache-v1";
+    const FETCH_TIMEOUT_MS = 2000;
+    const hasSupabaseConfig = Boolean(NORMALIZED_SUPABASE_URL && SUPABASE_ANON_KEY);
+    const postItems = Array.from(postList.querySelectorAll(".post-list-item"));
 
     const sortPosts = (sortBy) => {
-      const posts = Array.from(postList.querySelectorAll(".post-list-item"));
-      posts.sort((a, b) => {
+      postItems.sort((a, b) => {
         const dateDiff = Number(b.dataset.date) - Number(a.dataset.date);
         if (sortBy === "time") return dateDiff;
         const starDiff = Number(b.dataset.stars) - Number(a.dataset.stars);
         return starDiff === 0 ? dateDiff : starDiff;
       });
-      posts.forEach((post) => postList.appendChild(post));
+      postItems.forEach((post) => postList.appendChild(post));
     };
 
-    const getLikeCount = async (rawKey, fallbackValue) => {
-      if (!rawKey) return fallbackValue;
-      const localFallback = Number(localStorage.getItem(`counter:${namespace}:${rawKey}`)) || 0;
+    const readCache = () => {
       try {
-        const encodedKey = encodeURIComponent(rawKey);
-        const response = await fetch(`https://api.countapi.xyz/get/${namespace}/${encodedKey}`);
-        const data = await response.json();
-        const value = Number(data.value) || 0;
-        localStorage.setItem(`counter:${namespace}:${rawKey}`, String(value));
-        return value;
+        const parsed = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
+        return parsed && typeof parsed.counts === "object" ? parsed.counts : {};
       } catch (error) {
-        return Math.max(fallbackValue, localFallback);
+        return {};
       }
     };
 
-    const syncLikeCounts = async () => {
-      const posts = Array.from(postList.querySelectorAll(".post-list-item"));
-      await Promise.all(
-        posts.map(async (post) => {
-          const fallbackValue = Number(post.dataset.stars) || 0;
-          const likeValue = await getLikeCount(post.dataset.likeKey, fallbackValue);
-          post.dataset.stars = String(likeValue);
-          const countEl = post.querySelector(".post-like-count");
-          if (countEl) countEl.textContent = String(likeValue);
-        })
-      );
+    const writeCache = (counts) => {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ updatedAt: Date.now(), counts }));
+    };
+
+    const applyCounts = (counts) => {
+      postItems.forEach((post) => {
+        const slug = post.dataset.likeKey;
+        const fallbackValue = Number(post.dataset.stars) || 0;
+        const likeValue = Number(counts[slug]);
+        const resolved = Number.isFinite(likeValue) ? likeValue : fallbackValue;
+        post.dataset.stars = String(resolved);
+        const countEl = post.querySelector(".post-like-count");
+        if (countEl) countEl.textContent = String(resolved);
+      });
+    };
+
+    const withTimeout = (promise, timeoutMs) => {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => {
+          setTimeout(() => reject(new Error("timeout")), timeoutMs);
+        }),
+      ]);
+    };
+
+    const loadSupabaseClient = async () => {
+      const supabaseModule = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+      return supabaseModule.createClient(NORMALIZED_SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: { persistSession: false },
+      });
+    };
+
+    const hydrateLikes = async () => {
+      const cachedCounts = readCache();
+      applyCounts(cachedCounts);
+      sortPosts(sortSelect.value);
+
+      if (!hasSupabaseConfig) return;
+
+      const slugs = postItems.map((post) => post.dataset.likeKey).filter(Boolean);
+      if (!slugs.length) return;
+
+      try {
+        const supabase = await loadSupabaseClient();
+        const query = supabase.from("post_stats").select("slug, likes").in("slug", slugs);
+        const { data, error } = await withTimeout(query, FETCH_TIMEOUT_MS);
+        if (error) throw error;
+
+        const mergedCounts = { ...cachedCounts };
+        slugs.forEach((slug) => {
+          const fallback = Number(mergedCounts[slug]) || 0;
+          mergedCounts[slug] = fallback;
+        });
+        (data || []).forEach((row) => {
+          mergedCounts[row.slug] = Number(row.likes) || 0;
+        });
+
+        writeCache(mergedCounts);
+        applyCounts(mergedCounts);
+        sortPosts(sortSelect.value);
+      } catch (error) {
+        // 2s timeout or fetch failure: keep cached render, no blocking.
+      }
     };
 
     sortSelect.addEventListener("change", (event) => {
       sortPosts(event.target.value);
     });
 
-    syncLikeCounts().then(() => sortPosts(sortSelect.value));
+    hydrateLikes();
   })();
 </script>
 
