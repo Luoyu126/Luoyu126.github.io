@@ -127,7 +127,7 @@ layout: default
       const NORMALIZED_SUPABASE_URL = SUPABASE_URL.replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
       const LIKE_CACHE_KEY = "blog-like-cache-v1";
       const FETCH_TIMEOUT_MS = 2000;
-      const REPO_STAR_URL = "https://github.com/Luoyu126/Luoyu126.github.io/stargazers";
+      const REPO_STAR_URL = "https://github.com/Luoyu126/Luoyu126.github.io";
       const hasSupabaseConfig = Boolean(NORMALIZED_SUPABASE_URL && SUPABASE_ANON_KEY);
 
       const likeButton = document.querySelector(".post-like-button");
@@ -254,7 +254,7 @@ layout: default
           ].join("; ");
           document.body.appendChild(toast);
         }
-        toast.textContent = "感谢支持！欢迎去 GitHub 给主页点个星 ✨";
+        toast.textContent = "Thanks for your support! Feel free to star my homepage on GitHub ✨";
         toast.style.opacity = "1";
         toast.style.transform = "translateY(0)";
 
