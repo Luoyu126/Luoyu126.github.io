@@ -51,7 +51,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/books/";
           },
-        },{id: "post-a-post-with-plotly-js",
+        },{id: "post-当多线程遭遇-gil-一次-cpu-密集型任务的并行化避坑指南",
+        
+          title: "当多线程遭遇 GIL：一次 CPU 密集型任务的并行化避坑指南",
+        
+        description: "从串行到多线程再到多进程，复盘一次 CPU 密集型任务并发优化中的关键坑点。",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/gil-cpu-parallelism/";
+          
+        },
+      },{id: "post-a-post-with-plotly-js",
         
           title: "a post with plotly.js",
         
