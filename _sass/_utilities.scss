@@ -215,6 +215,11 @@ nav[data-toggle="toc"] {
     top: 0;
   }
 
+  #toc-sidebar,
+  .toc-sidebar-toggle {
+    display: none !important;
+  }
+
   /* Responsive code blocks for mobile */
   pre {
     font-size: 0.875rem;
@@ -446,6 +451,32 @@ nav[data-toggle="toc"] {
 
 #toc-sidebar {
   z-index: 1;
+  max-height: calc(100vh - 9rem);
+  overflow-y: auto;
+  transition: max-height 0.2s ease, opacity 0.2s ease;
+}
+
+.toc-sidebar-toggle {
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--global-divider-color);
+  background: var(--global-bg-color);
+  color: var(--global-text-color-light);
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.8rem;
+  line-height: 1.2;
+
+  &:hover {
+    color: var(--global-theme-color);
+    border-color: var(--global-theme-color);
+  }
+}
+
+#toc-sidebar.is-collapsed {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .echarts {

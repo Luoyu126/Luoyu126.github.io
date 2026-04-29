@@ -32,6 +32,16 @@ $(document).ready(function () {
     });
   }
 
+  const tocToggleButton = document.getElementById("toc-sidebar-toggle");
+  const tocSidebar = document.getElementById("toc-sidebar");
+  if (tocToggleButton && tocSidebar) {
+    tocToggleButton.addEventListener("click", () => {
+      const isCollapsed = tocSidebar.classList.toggle("is-collapsed");
+      tocToggleButton.setAttribute("aria-expanded", (!isCollapsed).toString());
+      tocToggleButton.textContent = isCollapsed ? "Show TOC" : "Hide TOC";
+    });
+  }
+
   // add css to jupyter notebooks
   const cssLink = document.createElement("link");
   cssLink.href = "../css/jupyter.css";

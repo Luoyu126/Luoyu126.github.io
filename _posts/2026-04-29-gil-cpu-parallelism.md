@@ -4,7 +4,8 @@ title: "当多线程遭遇 GIL：一次 CPU 密集型任务的并行化避坑指
 date: 2026-04-29 17:30:00 +0800
 description: "从串行到多线程再到多进程，复盘一次 CPU 密集型任务并发优化中的关键坑点。"
 tags: [work, system]
-categories: [work]
+giscus_comments: true
+stars: 0
 ---
 
 # 前言

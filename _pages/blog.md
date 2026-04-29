@@ -5,15 +5,7 @@ title: blog
 nav: true
 nav_order: 1
 pagination:
-  enabled: true
-  collection: posts
-  permalink: /page/:num/
-  per_page: 5
-  sort_field: date
-  sort_reverse: true
-  trail:
-    before: 1 # The number of links before the current page
-    after: 3 # The number of links after the current page
+  enabled: false
 ---
 
 <div class="post">
@@ -78,15 +70,9 @@ pagination:
 <h3 class="card-title text-lowercase">{{ post.title }}</h3>
 <p class="card-text">{{ post.description }}</p>
 
-                    {% if post.external_source == blank %}
-                      {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-                    {% else %}
-                      {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-                    {% endif %}
                     {% assign year = post.date | date: "%Y" %}
 
                     <p class="post-meta">
-                      {{ read_time }} min read &nbsp; &middot; &nbsp;
                       <a href="{{ year | prepend: '/blog/' | relative_url }}">
                         <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
                     </p>
@@ -103,26 +89,24 @@ pagination:
 
 {% endif %}
 
+  <div class="blog-sort-controls">
+    <label for="blog-sort-select">Sort by</label>
+    <select id="blog-sort-select" aria-label="Sort blog posts">
+      <option value="time" selected>Time</option>
+      <option value="hot">Hot (Stars)</option>
+    </select>
+  </div>
+
   <ul class="post-list">
 
-    {% if page.pagination.enabled %}
-      {% assign postlist = paginator.posts %}
-    {% else %}
-      {% assign postlist = site.posts %}
-    {% endif %}
+    {% assign postlist = site.posts %}
 
     {% for post in postlist %}
-
-    {% if post.external_source == blank %}
-      {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-    {% else %}
-      {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-    {% endif %}
     {% assign year = post.date | date: "%Y" %}
     {% assign tags = post.tags | join: "" %}
-    {% assign categories = post.categories | join: "" %}
+    {% assign stars = post.stars | default: 0 %}
 
-    <li>
+    <li class="post-list-item" data-date="{{ post.date | date: '%s' }}" data-stars="{{ stars }}">
 
 {% if post.thumbnail %}
 
@@ -143,8 +127,9 @@ pagination:
       </h3>
       <p>{{ post.description }}</p>
       <p class="post-meta">
-        {{ read_time }} min read &nbsp; &middot; &nbsp;
         {{ post.date | date: '%B %d, %Y' }}
+        &nbsp; &middot; &nbsp;
+        <i class="fa-regular fa-star fa-sm"></i> {{ stars }}
         {% if post.external_source %}
         &nbsp; &middot; &nbsp; {{ post.external_source }}
         {% endif %}
@@ -158,17 +143,6 @@ pagination:
             {% for tag in post.tags %}
             <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">
               <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
-              {% unless forloop.last %}
-                &nbsp;
-              {% endunless %}
-              {% endfor %}
-          {% endif %}
-
-          {% if categories != "" %}
-          &nbsp; &middot; &nbsp;
-            {% for category in post.categories %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
               {% unless forloop.last %}
                 &nbsp;
               {% endunless %}
@@ -191,8 +165,27 @@ pagination:
 
   </ul>
 
-{% if page.pagination.enabled %}
-{% include pagination.liquid %}
-{% endif %}
+<script>
+  (() => {
+    const sortSelect = document.getElementById("blog-sort-select");
+    const postList = document.querySelector(".post-list");
+    if (!sortSelect || !postList) return;
+
+    const sortPosts = (sortBy) => {
+      const posts = Array.from(postList.querySelectorAll(".post-list-item"));
+      posts.sort((a, b) => {
+        const dateDiff = Number(b.dataset.date) - Number(a.dataset.date);
+        if (sortBy === "time") return dateDiff;
+        const starDiff = Number(b.dataset.stars) - Number(a.dataset.stars);
+        return starDiff === 0 ? dateDiff : starDiff;
+      });
+      posts.forEach((post) => postList.appendChild(post));
+    };
+
+    sortSelect.addEventListener("change", (event) => {
+      sortPosts(event.target.value);
+    });
+  })();
+</script>
 
 </div>

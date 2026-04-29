@@ -87,6 +87,28 @@ layout: default
     {% endif %}
   {% endif %}
 
+  {% assign github_repo = site.giscus.repo %}
+  {% assign repo_owner = github_repo | split: '/' | first %}
+  {% assign repo_name = github_repo | split: '/' | last %}
+  {% if page.giscus_comments or github_repo != blank %}
+    <div class="post-social-actions">
+      {% if page.giscus_comments %}
+        <a class="post-social-link" href="#giscus_thread">
+          <i class="fa-regular fa-heart fa-sm"></i>
+          Like &amp; Comment
+        </a>
+      {% endif %}
+      {% if github_repo != blank %}
+        <iframe
+          src="https://ghbtns.com/github-btn.html?user={{ repo_owner }}&repo={{ repo_name }}&type=star&count=true"
+          width="170"
+          height="20"
+          title="Star {{ github_repo }} on GitHub"
+        ></iframe>
+      {% endif %}
+    </div>
+  {% endif %}
+
   {% if site.disqus_shortname and page.disqus_comments %}
     {% include disqus.liquid %}
   {% endif %}

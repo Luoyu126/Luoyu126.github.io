@@ -29,6 +29,11 @@
             <div class="col-sm-9">{{ content }}</div>
             <!-- sidebar, which will move to the top on a small screen -->
             <div class="col-sm-3">
+              {% if page.layout == 'post' %}
+                <button id="toc-sidebar-toggle" class="toc-sidebar-toggle" type="button" aria-expanded="true" aria-controls="toc-sidebar">
+                  Hide TOC
+                </button>
+              {% endif %}
               <nav id="toc-sidebar" class="sticky-top"></nav>
             </div>
           </div>
@@ -36,6 +41,11 @@
           <div class="row">
             <!-- sidebar, which will move to the top on a small screen -->
             <div class="col-sm-3">
+              {% if page.layout == 'post' %}
+                <button id="toc-sidebar-toggle" class="toc-sidebar-toggle" type="button" aria-expanded="true" aria-controls="toc-sidebar">
+                  Hide TOC
+                </button>
+              {% endif %}
               <nav id="toc-sidebar" class="sticky-top"></nav>
             </div>
             <!-- main content area -->
