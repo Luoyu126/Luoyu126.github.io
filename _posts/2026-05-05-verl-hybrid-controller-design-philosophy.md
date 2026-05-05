@@ -347,37 +347,43 @@ $$
 #### (1) 目标与采样分布不一致
 
 我们希望优化目标函数：
+
 $$
 J(\theta)=\mathbb{E}_{\tau\sim p_\theta(\tau)}[f(\tau)]
 $$
+
 但数据来自 $p_b(\tau)$。用测度变换可写为：
+
 $$
 \mathbb{E}_{\tau\sim p_\theta}[f(\tau)]
 =
 \mathbb{E}_{\tau\sim p_b}\left[\frac{p_\theta(\tau)}{p_b(\tau)}f(\tau)\right]
 $$
-其中
+
+其中，重要性权重定义为：
+
 $$
 w(\tau)=\frac{p_\theta(\tau)}{p_b(\tau)}
 $$
-是重要性权重。
 
-> 注：这里的重要性权重可以理解为，从旧策略迁移到新策略后，这条轨迹拿到的奖励是否还“值得被学习”。
->
-> 比如新策略下采到这条轨迹的概率为 0，那就不需要也不应该再根据这条轨迹更新参数。
+这里的直觉是：从旧策略迁移到新策略后，一条轨迹是否还“值得被学习”，取决于它在新策略下出现的相对概率。比如新策略下采到该轨迹的概率趋近于 0，就不应继续根据这条轨迹更新参数。
 
 #### (2) 在 Transformer 语境下体现
 
 自回归模型下（省略与 $\theta$ 无关项）：
+
 $$
 p_\theta(\tau)\propto \prod_t \pi_\theta(a_t|s_t),\quad
 p_b(\tau)\propto \prod_t \pi_b(a_t|s_t)
 $$
-所以：
+
+所以有：
 
 $$
 \log w(\tau)=\sum_t\left[\log\pi_\theta(a_t|s_t)-\log\pi_b(a_t|s_t)\right]
 $$
+
+进一步可得：
 
 $$
 w(\tau)=\exp\left(\sum_t(\log\pi_\theta-\log\pi_b)\right)
@@ -385,7 +391,7 @@ $$
 
 这就是“通过 logprob 比率补偿”的数学来源。
 
-> 当新旧策略偏差过大时，通常会配合 **PPO 的 Clip 机制**来防止更新步幅过大导致训练崩溃
+当新旧策略偏差过大时，通常会配合 **PPO 的 Clip 机制**来防止更新步幅过大导致训练崩溃。
 
 ### 3.2.4 实验量化结果：异步比同步快多少，硬等待有多少
 
