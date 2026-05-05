@@ -59,7 +59,7 @@ ninja.data = [{
         
           title: "当多线程遭遇 GIL：一次 CPU 密集型任务的并行化避坑指南",
         
-        description: "从串行到多线程再到多进程，复盘一次 CPU 密集型任务并发优化中的关键坑点。",
+        description: "从串行到多线程、多进程与协程，复盘一次 CPU 密集型任务并发优化中的关键坑点。",
         section: "Posts",
         handler: () => {
           
