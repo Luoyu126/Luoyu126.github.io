@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/books/";
           },
-        },{id: "post-当多线程遭遇-gil-一次-cpu-密集型任务的并行化避坑指南",
+        },{id: "post-从pnp到系统底层-verl灵活适配rl的设计哲学",
+        
+          title: "从PnP到系统底层：Verl灵活适配RL的设计哲学",
+        
+        description: "从源码与实验指标出发，梳理 Verl 如何用 Hybrid-Controller 与 one-step-off 流水线连接 rollout 和 update。",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/verl-hybrid-controller-design-philosophy/";
+          
+        },
+      },{id: "post-当多线程遭遇-gil-一次-cpu-密集型任务的并行化避坑指南",
         
           title: "当多线程遭遇 GIL：一次 CPU 密集型任务的并行化避坑指南",
         
