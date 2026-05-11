@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "后训练之 RL 算法篇：从 REINFORCE 到 GRPO"
-date: 2026-05-11 11:30:00 +0800
+date: 2026-05-11 11:20:00 +0800
 description: "梳理后训练场景下策略梯度算法的演进逻辑，从 REINFORCE 到 GRPO。"
 tags: [work, ai, post-training]
 giscus_comments: true
