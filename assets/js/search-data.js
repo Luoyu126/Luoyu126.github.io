@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/books/";
           },
-        },{id: "post-从pnp到系统底层-verl灵活适配rl的设计哲学",
+        },{id: "post-后训练之-rl-算法篇-从-reinforce-到-grpo",
+        
+          title: "后训练之 RL 算法篇：从 REINFORCE 到 GRPO",
+        
+        description: "梳理后训练场景下策略梯度算法的演进逻辑，从 REINFORCE 到 GRPO。",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/post-training-rl-algorithms/";
+          
+        },
+      },{id: "post-从pnp到系统底层-verl灵活适配rl的设计哲学",
         
           title: "从PnP到系统底层：Verl灵活适配RL的设计哲学",
         
