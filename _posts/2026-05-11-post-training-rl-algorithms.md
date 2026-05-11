@@ -33,7 +33,7 @@ stars: 0
 - **参数 $\theta$**：神经网络中所有可学习的权重。它决定了模型在给定上下文时输出 Token 的概率分布。
 - **状态 (State) $s_t$**：当前的上下文，即 `Prompt + 已生成的 Token 序列`。
 - **动作 (Action) $a_t$**：模型在当前分布下预测出的下一个 `Token`。
-- **策略 (Policy) $\pi_\theta(a_t | s_t)$**：在参数 $\theta$ 下，给定上文 $s_t$ 时，输出 $a_t$ 的条件概率。
+- **策略 (Policy)**：在参数 $\theta$ 下，给定上文 $s_t$ 时，输出条件概率 $\pi_\theta(a_t \mid s_t)$。
 - **轨迹 (Trajectory) $\tau$**：一个完整的生成序列 $(s_0, a_1, r_1, \dots, a_T, r_T)$。
 
 ## 2.2 目标函数的 Log-Derivative Trick 定义

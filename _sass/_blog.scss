@@ -255,7 +255,7 @@
       padding: clamp(1rem, 2.5vw, 2rem);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.06);
       font-size: 1.02rem;
-      line-height: 1.85;
+      line-height: 1.92;
 
       > p:first-of-type {
         font-size: 1.1rem;
@@ -300,6 +300,10 @@
       p,
       li {
         letter-spacing: 0.01em;
+      }
+
+      li + li {
+        margin-top: 0.25rem;
       }
 
       ul,
