@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/books/";
           },
-        },{id: "post-后训练之-rl-算法篇-从-reinforce-到-grpo",
+        },{id: "post-膜拜-amp-瑞平-gdpo",
+        
+          title: "膜拜 &amp; 瑞平 GDPO",
+        
+        description: "读 GDPO 论文笔记：多奖励设定下从 GRPO 到按奖励各自归一化再聚合的动机、分析与实验。",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/gdpo-multi-reward/";
+          
+        },
+      },{id: "post-后训练之-rl-算法篇-从-reinforce-到-grpo",
         
           title: "后训练之 RL 算法篇：从 REINFORCE 到 GRPO",
         
