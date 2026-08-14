@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Self-improving post-training loop</title>
+  <desc id="desc">Explore, generate new experience, receive feedback, learn, become stronger, and explore further.</desc>
+  <defs><radialGradient id="bg"><stop stop-color="#172a49"/><stop offset="1" stop-color="#071323"/></radialGradient><marker id="a" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#64d8ff"/></marker></defs>
+  <rect width="1200" height="700" rx="28" fill="url(#bg)"/>
+  <circle cx="600" cy="350" r="230" fill="none" stroke="#64d8ff" stroke-opacity=".16" stroke-width="58"/>
+  <g fill="none" stroke="#64d8ff" stroke-width="5" marker-end="url(#a)">
+    <path d="M600 93A257 257 0 0 1 835 247"/><path d="M858 276A257 257 0 0 1 828 505"/><path d="M809 535A257 257 0 0 1 600 607"/><path d="M566 605A257 257 0 0 1 374 503"/><path d="M352 474A257 257 0 0 1 358 246"/><path d="M380 218A257 257 0 0 1 566 96"/>
+  </g>
+  <g font-family="Inter,Segoe UI,sans-serif" text-anchor="middle">
+    <circle cx="600" cy="86" r="72" fill="#143b59" stroke="#66d9ff"/><text x="600" y="94" fill="#f5fbff" font-size="23" font-weight="700">Explore</text>
+    <circle cx="850" cy="235" r="88" fill="#233458" stroke="#8ca6ff"/><text x="850" y="226" fill="#f5f7ff" font-size="20" font-weight="700">Generate new</text><text x="850" y="253" fill="#f5f7ff" font-size="20" font-weight="700">experience</text>
+    <circle cx="850" cy="505" r="84" fill="#3b3155" stroke="#b698ff"/><text x="850" y="496" fill="#fff7ff" font-size="20" font-weight="700">Receive</text><text x="850" y="523" fill="#fff7ff" font-size="20" font-weight="700">feedback</text>
+    <circle cx="600" cy="614" r="72" fill="#493247" stroke="#ff9fca"/><text x="600" y="622" fill="#fff7fb" font-size="23" font-weight="700">Learn</text>
+    <circle cx="350" cy="505" r="84" fill="#4b362e" stroke="#ffbd7a"/><text x="350" y="496" fill="#fff8ee" font-size="20" font-weight="700">Become</text><text x="350" y="523" fill="#fff8ee" font-size="20" font-weight="700">stronger</text>
+    <circle cx="350" cy="235" r="88" fill="#24463e" stroke="#72e2b4"/><text x="350" y="226" fill="#effff8" font-size="20" font-weight="700">Explore</text><text x="350" y="253" fill="#effff8" font-size="20" font-weight="700">further</text>
+    <circle cx="600" cy="350" r="116" fill="#0d1b30" stroke="#f6c66f" stroke-width="3"/><text x="600" y="338" fill="#f9fcff" font-size="28" font-weight="700">Self-improving</text><text x="600" y="374" fill="#f9fcff" font-size="28" font-weight="700">post-training</text>
+  </g>
+</svg>

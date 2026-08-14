@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Reliability and coverage trade-off</title><desc id="desc">Verifiable rewards emphasize reliability while learned rewards provide broader coverage.</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#071827"/><stop offset="1" stop-color="#1c1630"/></linearGradient><linearGradient id="bar" x1="0" x2="1"><stop stop-color="#5dd8ff"/><stop offset=".5" stop-color="#9a8cff"/><stop offset="1" stop-color="#ff9e84"/></linearGradient></defs>
+  <rect width="1200" height="560" rx="28" fill="url(#bg)"/>
+  <text x="600" y="70" fill="#f5f7ff" font-family="Inter,Segoe UI,sans-serif" font-size="30" text-anchor="middle" font-weight="700">Reward Design Trade-off</text>
+  <line x1="170" y1="315" x2="1030" y2="315" stroke="url(#bar)" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="330" cy="315" r="55" fill="#0f334a" stroke="#62d9ff" stroke-width="5"/><circle cx="870" cy="315" r="55" fill="#4a2632" stroke="#ff9d88" stroke-width="5"/>
+  <g font-family="Inter,Segoe UI,sans-serif" text-anchor="middle"><text x="330" y="190" fill="#83e3ff" font-size="26" font-weight="700">Verifiable Reward</text><text x="330" y="230" fill="#dceeff" font-size="21">High Reliability</text><text x="330" y="260" fill="#9fb7cc" font-size="21">Low Coverage</text><text x="870" y="190" fill="#ffb09e" font-size="26" font-weight="700">Learned Reward</text><text x="870" y="230" fill="#ffe9e2" font-size="21">High Coverage</text><text x="870" y="260" fill="#c9aeb3" font-size="21">Lower Reliability</text><text x="165" y="400" fill="#7ddfff" font-size="18">Reliability</text><text x="1035" y="400" fill="#ffad99" font-size="18">Coverage</text><text x="600" y="486" fill="#d8dff0" font-size="22">How can we expand coverage without sacrificing reliability?</text></g>
+  <path d="M330 315Q600 445 870 315" fill="none" stroke="#f6cc75" stroke-width="4" stroke-dasharray="10 10"/>
+</svg>

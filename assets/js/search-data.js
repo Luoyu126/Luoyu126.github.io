@@ -9,8 +9,8 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-blog",
-          title: "blog",
+  },{id: "nav-articles",
+          title: "articles",
           description: "",
           section: "Navigation",
           handler: () => {
@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/books/";
           },
-        },{id: "post-膜拜-amp-瑞平-gdpo",
+        },{id: "post-post-training-motivation-self-improvement-and-open-problems",
+        
+          title: "Post-training: Motivation, Self-Improvement, and Open Problems",
+        
+        description: "A survey of why post-training matters, how self-improving post-training systems work, and the central open problems in feedback and policy optimization.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/post-training-survey/";
+          
+        },
+      },{id: "post-膜拜-amp-瑞平-gdpo",
         
           title: "膜拜 &amp; 瑞平 GDPO",
         
