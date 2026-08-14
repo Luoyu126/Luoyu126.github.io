@@ -94,7 +94,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 
 blog_name: Yunyi's Articles # blog_name will be displayed in your articles page
 blog_description: Blogs, surveys, and technical notes on AI, systems, and beyond.
-permalink: /blog/:year/:title/
+permalink: /articles/:year/:title/
 lsi: false # produce an index for related posts
 
 # Pagination
@@ -270,9 +270,9 @@ jekyll-archives:
   posts:
     enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
     permalinks:
-      year: "/blog/:year/"
-      tags: "/blog/:type/:name/"
-      categories: "/blog/:type/:name/"
+      year: "/articles/:year/"
+      tags: "/articles/:type/:name/"
+      categories: "/articles/:type/:name/"
   books:
     enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
 
