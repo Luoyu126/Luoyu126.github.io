@@ -14,7 +14,7 @@ ninja.data = [{
           description: "",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/blog/";
+            window.location.href = "/articles/";
           },
         },{id: "nav-projects",
           title: "projects",
@@ -52,7 +52,7 @@ ninja.data = [{
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2026/post-training-survey/";
+            window.location.href = "/articles/2026/post-training-survey/";
           
         },
       },{id: "post-膜拜-amp-瑞平-gdpo",
@@ -63,7 +63,7 @@ ninja.data = [{
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2026/gdpo-multi-reward/";
+            window.location.href = "/articles/2026/gdpo-multi-reward/";
           
         },
       },{id: "post-后训练之-rl-算法篇-从-reinforce-到-grpo",
@@ -74,7 +74,7 @@ ninja.data = [{
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2026/post-training-rl-algorithms/";
+            window.location.href = "/articles/2026/post-training-rl-algorithms/";
           
         },
       },{id: "post-从pnp到系统底层-verl灵活适配rl的设计哲学",
@@ -85,7 +85,7 @@ ninja.data = [{
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2026/verl-hybrid-controller-design-philosophy/";
+            window.location.href = "/articles/2026/verl-hybrid-controller-design-philosophy/";
           
         },
       },{id: "post-当多线程遭遇-gil-一次-cpu-密集型任务的并行化避坑指南",
@@ -96,7 +96,7 @@ ninja.data = [{
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2026/gil-cpu-parallelism/";
+            window.location.href = "/articles/2026/gil-cpu-parallelism/";
           
         },
       },{id: "books-the-godfather",
