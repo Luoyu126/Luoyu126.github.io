@@ -24,16 +24,16 @@ layout: default
       {% if page.meta %}• {{ page.meta }}{% endif %}
     </p>
     <p class="post-tags">
-      {% if url_beginning == '/blog/' %}
-        <a href="{{ year | prepend: '/blog/' | relative_url }}"> <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
+      {% if url_beginning == '/articles/' %}
+        <a href="{{ year | prepend: '/articles/' | relative_url }}"> <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
       {% else %}
         <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
       {% endif %}
       {% if tags != '' %}
         &nbsp; &middot; &nbsp;
         {% for tag in page.tags %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+          {% if url_beginning == '/articles/' %}
+            <a href="{{ tag | slugify | prepend: '/articles/tag/' | relative_url }}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
           {% else %}
             <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
           {% endif %}
@@ -46,8 +46,8 @@ layout: default
       {% if categories != '' %}
         &nbsp; &middot; &nbsp;
         {% for category in page.categories %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}"> <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}</a>
+          {% if url_beginning == '/articles/' %}
+            <a href="{{ category | slugify | prepend: '/articles/category/' | relative_url }}"> <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}</a>
           {% else %}
             <i class="fa-solid fa-tag fa-sm"></i> {{ category }}
           {% endif %}
@@ -89,7 +89,7 @@ layout: default
   {% endif %}
 
   {% assign github_repo = site.giscus.repo %}
-  {% assign like_key_source = page.id | default: page.url %}
+  {% assign like_key_source = page.url | replace_first: '/articles/', '/blog/' %}
   {% assign like_key = like_key_source | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
   {% assign repo_star_key = github_repo | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
   <div class="post-social-actions">
