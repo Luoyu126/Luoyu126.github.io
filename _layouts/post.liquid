@@ -16,6 +16,7 @@ layout: default
 <div class="post">
   <header class="post-header">
     <h1 class="post-title">{{ page.title }}</h1>
+    <div class="article-type-badge">{{ page.article_type | default: "Blog" }}</div>
     <p class="post-meta">
       Created on {{ page.date | date: '%B %d, %Y' }}
       {% if page.author %}by {{ page.author }}{% endif %}

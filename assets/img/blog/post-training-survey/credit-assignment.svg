@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" role="img" aria-labelledby="title desc">
+  <title id="title">Sequence-level reward and token-level credit assignment</title><desc id="desc">A sparse outcome reward is broadcast to all tokens even though intermediate actions contribute differently.</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#081426"/><stop offset="1" stop-color="#14172e"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ffd172"/></marker></defs>
+  <rect width="1200" height="600" rx="28" fill="url(#bg)"/>
+  <text x="600" y="64" fill="#f4f7ff" font-family="Inter,Segoe UI,sans-serif" font-size="30" text-anchor="middle" font-weight="700">Credit Assignment Granularity</text>
+  <g font-family="Inter,Segoe UI,sans-serif" text-anchor="middle">
+    <text x="120" y="175" fill="#aebcd2" font-size="20">State</text>
+    <g fill="#173552" stroke="#58cfff"><rect x="185" y="135" width="110" height="70" rx="14"/><rect x="330" y="135" width="110" height="70" rx="14"/><rect x="475" y="135" width="110" height="70" rx="14"/><rect x="620" y="135" width="110" height="70" rx="14"/><rect x="765" y="135" width="110" height="70" rx="14"/></g>
+    <g fill="#f1f7ff" font-size="19"><text x="240" y="178">Action 1</text><text x="385" y="178">Action 2</text><text x="530" y="178">Action 3</text><text x="675" y="178">Action 4</text><text x="820" y="178">Action 5</text></g>
+    <path d="M900 170H1018" stroke="#ffd172" stroke-width="5" marker-end="url(#a)"/><circle cx="1070" cy="170" r="55" fill="#5a4526" stroke="#ffd172" stroke-width="4"/><text x="1070" y="162" fill="#fff7dc" font-size="18" font-weight="700">Outcome</text><text x="1070" y="186" fill="#fff7dc" font-size="18" font-weight="700">Reward</text>
+    <text x="600" y="282" fill="#ffd98a" font-size="23" font-weight="700">One sequence-level advantage</text>
+    <path d="M600 300V350M600 350H240V392M600 350H385V392M600 350H530V392M600 350H675V392M600 350H820V392" fill="none" stroke="#ffd172" stroke-width="3"/>
+    <g fill="#3b3155" stroke="#ad97ff"><rect x="185" y="392" width="110" height="70" rx="14"/><rect x="330" y="392" width="110" height="70" rx="14"/><rect x="475" y="392" width="110" height="70" rx="14"/><rect x="620" y="392" width="110" height="70" rx="14"/><rect x="765" y="392" width="110" height="70" rx="14"/></g>
+    <g fill="#f8f4ff" font-size="20" font-weight="700"><text x="240" y="435">Same A</text><text x="385" y="435">Same A</text><text x="530" y="435">Same A</text><text x="675" y="435">Same A</text><text x="820" y="435">Same A</text></g>
+    <text x="600" y="530" fill="#b8c4d8" font-size="21">Different causal contributions, essentially the same learning signal</text>
+  </g>
+</svg>

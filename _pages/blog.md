@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /blog/
-title: blog
+title: articles
 nav: true
 nav_order: 1
 pagination:
@@ -105,6 +105,7 @@ pagination:
     {% assign year = post.date | date: "%Y" %}
     {% assign tags = post.tags | join: "" %}
     {% assign stars = post.stars | default: 0 %}
+    {% assign article_type = post.article_type | default: "Blog" %}
     {% assign like_key_source = post.id | default: post.url %}
     {% assign like_key = like_key_source | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
 
@@ -115,6 +116,7 @@ pagination:
 <div class="row">
           <div class="col-sm-9">
 {% endif %}
+        <div class="article-type-badge">{{ article_type }}</div>
         <h3>
         {% if post.redirect == blank %}
           <a class="post-title" href="{{ post.url | relative_url }}">{{ post.title }}</a>
