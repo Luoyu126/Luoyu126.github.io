@@ -8,7 +8,7 @@ module Jekyll
       super(site, site.source, directory, "index.html")
 
       relative_target = "#{site.baseurl}#{target_path}"
-      canonical_target = "#{site.url}#{relative_target}"
+      canonical_target = "#{site.config["url"]}#{relative_target}"
       escaped_relative_target = CGI.escapeHTML(relative_target)
       escaped_canonical_target = CGI.escapeHTML(canonical_target)
 
