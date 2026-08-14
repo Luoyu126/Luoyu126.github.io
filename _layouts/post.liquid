@@ -89,7 +89,7 @@ layout: default
   {% endif %}
 
   {% assign github_repo = site.giscus.repo %}
-  {% assign like_key_source = page.url | replace_first: '/articles/', '/blog/' %}
+  {% assign like_key_source = page.id | default: page.url | replace_first: '/articles/', '/blog/' %}
   {% assign like_key = like_key_source | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
   {% assign repo_star_key = github_repo | replace: '/', '--' | replace: '.', '-' | replace: ':', '-' %}
   <div class="post-social-actions">
